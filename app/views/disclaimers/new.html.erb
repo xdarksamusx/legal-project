@@ -1,0 +1,17 @@
+<h1> Generate your Legal Disclaimer </h1>
+<%= form_with url: disclaimers_path, method: :post, local: true do |form| %>
+  <div>
+    <%= form.label :topic, "Disclaimer Type"%> <br>
+    <%= form.text_field :topic, placeholder: "e.g personal blog with affiliate links"%>
+  </div>
+  <div>
+    <%= form.label :tone, "Tone (optional)" %> <br>
+    <%= form.select :tone, ["Professional", "Friendly", "Neutral"]%>
+  </div>
+  <div>
+    <%= form.submit "Generate disclaimer" %>
+  </div>
+<% end %>
+<div id="disclaimer-section">
+  <%= render partial: "disclaimers/disclaimer", locals: { disclaimer: @disclaimer } %>
+</div>
