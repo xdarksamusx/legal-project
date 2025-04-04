@@ -6,3 +6,9 @@
     <p>No disclaimer was generated.</p>
   <% end %>
 </div>
+<div>
+  <%= link_to "Log Out", destroy_user_session_path, method: :delete, data: { turbo: false } %>
+</div>
+<div>
+  <%= link_to "Go to profile " , "/profile", method: :get  %>
+</div>

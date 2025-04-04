@@ -1,4 +1,22 @@
 Rails.application.routes.draw do
+
+  # root to: 'devise/sessions#new'
+
+
+
+  get "users/show"
+  get '/profile', to: 'users#show', as: 'user_profile'
+  devise_for :users , controllers: {
+    registrations: 'users/registrations',
+    passwords: 'users/passwords'
+  }
+
+  devise_scope :user do  
+    get '/users/sign_out' => 'devise/sessions#destroy'     
+ end
+
+
+
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
 
   # Reveal health status on /up that returns 200 if the app boots with no exceptions, otherwise 500.
@@ -13,6 +31,8 @@ Rails.application.routes.draw do
   # root "posts#index"
 
   root "disclaimers#new"
+
+  #  root to: "devise/sessions#new"
 
   resources :disclaimers
 end
