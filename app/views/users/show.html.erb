@@ -1,0 +1,11 @@
+<h1>  My Profile </h1>
+<p> <strong>Email:  </strong>  <%= @user.email %>    </p>
+<% if @user.username.present?%>
+  <p> <strong>   Username:   </strong>  <%= @user.username%>   </p>
+<%end%>
+<p>  <strong> Member since:   </strong>  <%=  @user.created_at.strftime("%B %d, %Y")  %>  </p>
+<%= link_to 'Edit Profile' , edit_user_registration_path, class: "button" %>
+<%= link_to "Log Out", destroy_user_session_path, method: :delete, data: { turbo: false } %>
+<% if @user.image.present?%>
+  <%= image_tag @user.image, alt: "Your Profile Picture ", width: 150 %>
+<%end%>
