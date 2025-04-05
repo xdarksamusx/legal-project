@@ -1,0 +1,16 @@
+<h1> List of disclaimeres for: <%= @user.username%></h1>
+<% @disclaimers.each_with_index do |disclaimer, i | %>
+  <ul>
+    <li>
+      <div> statement : <%= i%>   </div>
+      <div> <%= disclaimer.statement%>   </div>
+    </li>
+  </ul>
+<%end%>
+<div>
+  <%= link_to "Log Out", destroy_user_session_path, method: :delete, data: { turbo: false } %>
+</div>
+<div>
+  <%= link_to "Profile " , "/profile", method: :get  %>
+</div>
+<%= link_to "Home Page", root_path%>

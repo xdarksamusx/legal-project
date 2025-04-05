@@ -4,8 +4,10 @@
   <p> <strong>   Username:   </strong>  <%= @user.username%>   </p>
 <%end%>
 <p>  <strong> Member since:   </strong>  <%=  @user.created_at.strftime("%B %d, %Y")  %>  </p>
+<h4> Your dislaimers <%= link_to "Disclaimers", disclaimers_path  %>   </h4>
 <%= link_to 'Edit Profile' , edit_user_registration_path, class: "button" %>
 <%= link_to "Log Out", destroy_user_session_path, method: :delete, data: { turbo: false } %>
+<%= link_to "Home Page", root_path%>
 <% if @user.image.present?%>
   <%= image_tag @user.image, alt: "Your Profile Picture ", width: 150 %>
 <%end%>

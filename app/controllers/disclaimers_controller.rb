@@ -2,12 +2,19 @@ class DisclaimersController < ApplicationController
 
 
   def index
+    @user = current_user
+    @disclaimers = @user.disclaimers
   end
 
   def show 
   end
 
   def create 
+
+    @user =  current_user
+    @disclaimer = Disclaimer.new
+    @disclaimer.user = @user
+
     topic = params[:topic]
     tone = params[:tone]
 
@@ -15,6 +22,7 @@ class DisclaimersController < ApplicationController
 
     prompt = "Write a short legal disclaimer for: #{topic}"
     prompt += "Use a #{tone.downcase} tone." if tone.present?
+    
 
     response = client.chat(
       parameters: {
@@ -31,19 +39,28 @@ class DisclaimersController < ApplicationController
 
     )
 
-    puts response.inspect
+    puts response
+
+ 
+
+    @disclaimer.statement = (response.dig("choices", 0, "message", "content") || "Something went wrong. Please try again.").truncate(810, separator: '')
 
 
-    @disclaimer = response.dig("choices", 0, "message", "content") || "Something went wrong. Please try again."
-
-    @disclaimer = @disclaimer.truncate(810, sepatator: '')
-
-    respond_to do |format|
-      format.turbo_stream do
-        render turbo_stream: turbo_stream.replace("disclaimer-section", partial:"disclaimers/disclaimer", locals: {disclaimer: @disclaimer})
+    if @disclaimer.save 
+      respond_to do |format|
+        format.turbo_stream do
+          render turbo_stream: turbo_stream.replace("disclaimer-section", partial:"disclaimers/disclaimer", locals: {disclaimer: @disclaimer})
+        end
+        format.html{render :new}
       end
-      format.html{render :new}
+    else
+      render :new
     end
+    
+
+
+
+    
      
 
 
@@ -59,6 +76,13 @@ class DisclaimersController < ApplicationController
 
   def update 
   end
+
+  private
+
+  def disclaimer_params
+    params.permit(:statement)
+  end
+
 
 
 
