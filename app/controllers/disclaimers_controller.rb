@@ -110,22 +110,32 @@ class DisclaimersController < ApplicationController
 
 
   def download_txt 
+    timestamp = Time.now.strftime("%Y-%m-%d_%H-%M")
+
+
     disclaimer = current_user.disclaimers.find(params[:id])
+    filename = "disclaimer_#{disclaimer.id}_#{timestamp}.txt"
+
     send_data disclaimer.statement,
-    filename: "disclaimer_#{disclaimer.id}.txt",
+    filename: filename,
     type: 'text/plain',
     disposition: 'inline'
 
   end
 
   def download_pdf
+    timestamp = Time.now.strftime("%Y-%m-%d_%H-%M")
+
+
     disclaimer = current_user.disclaimers.find(params[:id])
+    filename = "disclaimer_#{disclaimer.id}_#{timestamp}.pdf"
+
     pdf = Prawn::Document.new 
     pdf.text "Your Disclaiemr", sixe: 18, style: :bold 
     pdf.move_down 10 
     pdf.text disclaimer.statement 
     send_data pdf.render,
-    filename: "disclaimer_#{disclaimer.id}.pdf",
+    filename: filename,
     type: 'application/pdf',
     disposition: 'inline'
 
