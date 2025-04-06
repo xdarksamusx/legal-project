@@ -6,6 +6,8 @@
       <div> <%= disclaimer.statement%>   </div>
       <%= link_to "Delete", disclaimer_path(disclaimer), method: :delete, data: {turbo_method: :delete, confirm: "Are you sure"} %>
       <%= link_to "edit", edit_disclaimer_path(disclaimer) %>
+      <%= link_to "Download as .txt", download_txt_disclaimer_path(disclaimer), target: "_blank" %>
+      <%= link_to "Download as .pdf", download_pdf_disclaimer_path(disclaimer), target: "_blank" %>
     </li>
   </ul>
 <%end%>

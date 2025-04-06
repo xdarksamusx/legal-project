@@ -44,6 +44,8 @@ gem "ruby-openai"
 
 gem 'devise'
 
+gem 'prawn'
+
 
  
 

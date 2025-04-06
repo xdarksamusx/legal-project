@@ -219,8 +219,13 @@ GEM
     parser (3.3.7.4)
       ast (~> 2.4.1)
       racc
+    pdf-core (0.10.0)
     pp (0.6.2)
       prettyprint
+    prawn (2.5.0)
+      matrix (~> 0.4)
+      pdf-core (~> 0.10.0)
+      ttfunk (~> 1.8)
     prettyprint (0.2.0)
     prism (1.4.0)
     propshaft (1.1.0)
@@ -364,6 +369,8 @@ GEM
     thruster (0.1.12-arm64-darwin)
     thruster (0.1.12-x86_64-linux)
     timeout (0.4.3)
+    ttfunk (1.8.0)
+      bigdecimal (~> 3.1)
     turbo-rails (2.0.13)
       actionpack (>= 7.1.0)
       railties (>= 7.1.0)
@@ -412,6 +419,7 @@ DEPENDENCIES
   jbuilder
   kamal
   letter_opener
+  prawn
   propshaft
   puma (>= 5.0)
   rails (~> 8.0.2)

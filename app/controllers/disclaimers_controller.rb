@@ -1,3 +1,7 @@
+
+require 'prawn'
+
+
 class DisclaimersController < ApplicationController
 
 
@@ -47,6 +51,8 @@ class DisclaimersController < ApplicationController
 
 
     if @disclaimer.save 
+      UserMailer.with(user: @user, disclaimer: @disclaimer).disclaimer_copy.deliver_now
+
       respond_to do |format|
         format.turbo_stream do
           render turbo_stream: turbo_stream.replace("disclaimer-section", partial:"disclaimers/disclaimer", locals: {disclaimer: @disclaimer})
@@ -96,11 +102,37 @@ class DisclaimersController < ApplicationController
 
  
 
-  private
+  
 
   def disclaimer_params
     params.require(:disclaimer).permit(:statement)
   end
+
+
+  def download_txt 
+    disclaimer = current_user.disclaimers.find(params[:id])
+    send_data disclaimer.statement,
+    filename: "disclaimer_#{disclaimer.id}.txt",
+    type: 'text/plain',
+    disposition: 'inline'
+
+  end
+
+  def download_pdf
+    disclaimer = current_user.disclaimers.find(params[:id])
+    pdf = Prawn::Document.new 
+    pdf.text "Your Disclaiemr", sixe: 18, style: :bold 
+    pdf.move_down 10 
+    pdf.text disclaimer.statement 
+    send_data pdf.render,
+    filename: "disclaimer_#{disclaimer.id}.pdf",
+    type: 'application/pdf',
+    disposition: 'inline'
+
+ 
+  end
+
+  private
 
 
 

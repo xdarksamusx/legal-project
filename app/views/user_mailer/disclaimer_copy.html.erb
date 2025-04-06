@@ -1,0 +1,10 @@
+<p> Dear @user.username </p>
+<br>
+<p> Here is a copy of your generated discliamer </p>
+<%= @disclaimer.statement%>
+<%= link_to "Download as .txt", 
+    @url_helpers.download_txt_disclaimer_url(@disclaimer, host: "localhost", port: 3000), 
+    target: "_blank" %>
+<%= link_to "Download as .pdf", 
+    @url_helpers.download_pdf_disclaimer_url(@disclaimer, host: "localhost", port: 3000), 
+    target: "_blank" %>
