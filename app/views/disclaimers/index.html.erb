@@ -4,6 +4,8 @@
     <li>
       <div> statement : <%= i%>   </div>
       <div> <%= disclaimer.statement%>   </div>
+      <%= link_to "Delete", disclaimer_path(disclaimer), method: :delete, data: {turbo_method: :delete, confirm: "Are you sure"} %>
+      <%= link_to "edit", edit_disclaimer_path(disclaimer) %>
     </li>
   </ul>
 <%end%>

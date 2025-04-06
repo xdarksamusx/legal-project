@@ -72,15 +72,34 @@ class DisclaimersController < ApplicationController
   end
 
   def destroy 
+    @disclaimer = current_user.disclaimers.find(params[:id])
+    @disclaimer.destroy 
+    redirect_to disclaimers_path, notice: "Disclaimers deleted "
+   
   end
 
   def update 
+    @disclaimer = current_user.disclaimers.find(params[:id])
+    if @disclaimer.update(disclaimer_params)
+      redirect_to disclaimers_path, notice: "Disclaimer updated successfully"
+    else
+      
+      render :edit, alert: "Update failed"
+    end
+
   end
+
+  def edit 
+    @disclaimer = current_user.disclaimers.find(params[:id])
+  end
+
+
+ 
 
   private
 
   def disclaimer_params
-    params.permit(:statement)
+    params.require(:disclaimer).permit(:statement)
   end
 
 
