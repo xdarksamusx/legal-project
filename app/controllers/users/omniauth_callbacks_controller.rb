@@ -27,4 +27,41 @@ class Users::OmniauthCallbacksController < Devise::OmniauthCallbacksController
   # def after_omniauth_failure_path_for(scope)
   #   super(scope)
   # end
+
+  def spotify
+    puts request.env["omniauth.auth"].inspect
+
+
+    @user = User.from_omniauth(request.env["omniauth.auth"])
+  
+    if @user.persisted?
+      sign_in_and_redirect @user, event: :authentication
+      set_flash_message(:notice, :success, kind: "Spotify") if is_navigational_format?
+    else
+ 
+      session["devise_github_data"] = request.env["omniauth.auth"].slice("provider", "uid", "info")
+      redirect_to new_user_registration_url
+    end
+  end
+  
+
+
+  def github 
+    puts request.env["omniauth.auth"].inspect
+
+    @user = User.from_omniauth(request.env["omniauth.auth"])
+    if @user.persisted?
+      sign_in_and_redirect @user, event: :authentication
+      set_flash_message(:notice, :success, kind: "Github") if is_navigational_format?
+    else
+      session["devise_github_data"] = request.env["omniauth.auth"].slice("provider", "uid", "info")
+      redirect_to new_user_registration_url
+    end  # 
+  end      
+  
+
+
+
+
+
 end
