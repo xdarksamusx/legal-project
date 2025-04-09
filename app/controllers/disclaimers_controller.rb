@@ -12,6 +12,14 @@ class DisclaimersController < ApplicationController
   def index
     @user = current_user
     @disclaimers = @user.disclaimers
+
+
+    respond_to do |format|
+      format.html 
+      format.json {render json: @disclaimers}
+    end
+
+
   end
 
   def show 
