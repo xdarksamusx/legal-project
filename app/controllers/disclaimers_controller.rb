@@ -4,6 +4,10 @@ require 'prawn'
 
 class DisclaimersController < ApplicationController
 
+  before_action :authenticate_user!
+  before_action :set_disclaimer, only: [:show, :edit, :update, :destroy, :download_pdf , :download_txt] 
+
+
 
   def index
     @user = current_user
@@ -43,8 +47,7 @@ class DisclaimersController < ApplicationController
 
     )
 
-    puts response
-
+ 
  
 
     @disclaimer.statement = (response.dig("choices", 0, "message", "content") || "Something went wrong. Please try again.").truncate(810, separator: '')
@@ -78,14 +81,14 @@ class DisclaimersController < ApplicationController
   end
 
   def destroy 
-    @disclaimer = current_user.disclaimers.find(params[:id])
+ 
     @disclaimer.destroy 
     redirect_to disclaimers_path, notice: "Disclaimers deleted "
    
   end
 
   def update 
-    @disclaimer = current_user.disclaimers.find(params[:id])
+ 
     if @disclaimer.update(disclaimer_params)
       redirect_to disclaimers_path, notice: "Disclaimer updated successfully"
     else
@@ -96,7 +99,7 @@ class DisclaimersController < ApplicationController
   end
 
   def edit 
-    @disclaimer = current_user.disclaimers.find(params[:id])
+ 
   end
 
 
@@ -113,7 +116,8 @@ class DisclaimersController < ApplicationController
     timestamp = Time.now.strftime("%Y-%m-%d_%H-%M")
 
 
-    disclaimer = current_user.disclaimers.find(params[:id])
+    disclaimer = @disclaimer
+
     filename = "disclaimer_#{disclaimer.id}_#{timestamp}.txt"
 
     send_data disclaimer.statement,
@@ -127,11 +131,12 @@ class DisclaimersController < ApplicationController
     timestamp = Time.now.strftime("%Y-%m-%d_%H-%M")
 
 
-    disclaimer = current_user.disclaimers.find(params[:id])
+    disclaimer = @disclaimer
+
     filename = "disclaimer_#{disclaimer.id}_#{timestamp}.pdf"
 
     pdf = Prawn::Document.new 
-    pdf.text "Your Disclaiemr", sixe: 18, style: :bold 
+    pdf.text "Your Disclaimer", sixe: 18, style: :bold 
     pdf.move_down 10 
     pdf.text disclaimer.statement 
     send_data pdf.render,
@@ -143,6 +148,11 @@ class DisclaimersController < ApplicationController
   end
 
   private
+
+
+  def set_disclaimer
+    @disclaimer = current_user.disclaimers.find(params[:id])
+  end
 
 
 

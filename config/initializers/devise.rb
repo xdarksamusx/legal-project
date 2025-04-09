@@ -46,7 +46,7 @@ Devise.setup do |config|
   # session. If you need permissions, you should implement that in a before filter.
   # You can also supply a hash where the value is a boolean determining whether
   # or not authentication should be aborted when the value is not present.
-  # config.authentication_keys = [:email]
+  config.authentication_keys = [:email]
 
   # Configure parameters from the request object used for authentication. Each entry
   # given should be a request method and it will automatically be passed to the
@@ -64,7 +64,6 @@ Devise.setup do |config|
   # These keys will have whitespace before and after removed upon creating or
   # modifying a user and when used to authenticate or find a user. Default is :email.
   config.strip_whitespace_keys = [:email]
-
   # Tell if authentication through request.params is enabled. True by default.
   # It can be set to an array that will enable params authentication only for the
   # given strategies, for example, `config.params_authenticatable = [:database]` will
@@ -194,8 +193,8 @@ Devise.setup do |config|
   # Defines which strategy will be used to lock an account.
   # :failed_attempts = Locks an account after a number of failed attempts to sign in.
   # :none            = No lock strategy. You should handle locking by yourself.
-  # config.lock_strategy = :failed_attempts
-
+  config.lock_strategy = :failed_attempts
+ 
   # Defines which key will be used when locking and unlocking an account
   # config.unlock_keys = [:email]
 
@@ -204,14 +203,14 @@ Devise.setup do |config|
   # :time  = Re-enables login after a certain amount of time (see :unlock_in below)
   # :both  = Enables both strategies
   # :none  = No unlock strategy. You should handle unlocking by yourself.
-  # config.unlock_strategy = :both
+  config.unlock_strategy = :time
 
   # Number of authentication tries before locking an account if lock_strategy
   # is failed attempts.
-  # config.maximum_attempts = 20
+  config.maximum_attempts = 2
 
   # Time interval to unlock the account if :time is enabled as unlock_strategy.
-  # config.unlock_in = 1.hour
+  config.unlock_in = 10.minutes
 
   # Warn on the last attempt before the account is locked.
   # config.last_attempt_warning = true
@@ -264,6 +263,8 @@ Devise.setup do |config|
   #
   # The "*/*" below is required to match Internet Explorer requests.
   # config.navigational_formats = ['*/*', :html, :turbo_stream]
+  # OmniAuth.config.request_validation_phase = ->(env) { true }
+
 
   # The default HTTP method used to sign out a resource. Default is :delete.
   config.sign_out_via = :delete
@@ -271,7 +272,8 @@ Devise.setup do |config|
   # ==> OmniAuth
   # Add a new OmniAuth provider. Check the wiki for more information on setting
   # up on your models and hooks.
-  # config.omniauth :github, 'APP_ID', 'APP_SECRET', scope: 'user,public_repo'
+  config.omniauth :github, ENV['GITHUB_KEY'], ENV['GITHUB_SECRET'], scope: 'user:email'
+  config.omniauth :spotify, ENV['SPOTIFY_CLIENT_ID'], ENV['SPOTIFY_CLIENT_SECRET'], scope: 'user-read-email'
 
   # ==> Warden configuration
   # If you want to use other strategies, that are not supported by Devise, or

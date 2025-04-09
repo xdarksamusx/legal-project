@@ -6,9 +6,15 @@ Rails.application.routes.draw do
 
   get "users/show"
   get '/profile', to: 'users#show', as: 'user_profile'
-  devise_for :users , controllers: {
+
+
+  devise_for :users, controllers: {
+    sessions: 'users/sessions',
     registrations: 'users/registrations',
-    passwords: 'users/passwords'
+    passwords: 'users/passwords',
+    confirmations: 'users/confirmations',
+    unlocks: 'users/unlocks',
+    omniauth_callbacks: 'users/omniauth_callbacks'
   }
 
   devise_scope :user do  
@@ -43,6 +49,9 @@ Rails.application.routes.draw do
       get :download_pdf
     end 
   end
+
+
+ 
  
 
 

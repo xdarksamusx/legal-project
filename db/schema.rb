@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_04_05_022331) do
+ActiveRecord::Schema[8.0].define(version: 2025_04_08_205709) do
   create_table "disclaimers", force: :cascade do |t|
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
@@ -32,6 +32,20 @@ ActiveRecord::Schema[8.0].define(version: 2025_04_05_022331) do
     t.datetime "updated_at", null: false
     t.string "username"
     t.string "image"
+    t.string "unlock_token"
+    t.datetime "locked_at"
+    t.integer "failed_attempts", default: 0, null: false
+    t.string "confirmation_token"
+    t.datetime "confirmed_at"
+    t.datetime "confirmation_sent_at"
+    t.string "unconfirmed_email"
+    t.integer "sign_in_count", default: 0, null: false
+    t.datetime "current_sign_in_at"
+    t.datetime "last_sign_in_at"
+    t.string "current_sign_in_ip"
+    t.string "last_sign_in_ip"
+    t.string "provider"
+    t.string "uid"
     t.index ["email"], name: "index_users_on_email", unique: true
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
   end
