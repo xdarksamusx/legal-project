@@ -6,6 +6,7 @@ class DisclaimersController < ApplicationController
 
   before_action :authenticate_user!
   before_action :set_disclaimer, only: [:show, :edit, :update, :destroy, :download_pdf , :download_txt] 
+  skip_before_action :verify_authenticity_token, only: [:create]
 
 
 
@@ -66,19 +67,35 @@ class DisclaimersController < ApplicationController
 
     @disclaimer.statement = (response.dig("choices", 0, "message", "content") || "Something went wrong. Please try again.").truncate(810, separator: '')
 
-
     if @disclaimer.save 
       UserMailer.with(user: @user, disclaimer: @disclaimer).disclaimer_copy.deliver_now
 
+      # Rails.logger.info "Saving disclaimer: #{@disclaimer.inspect}"
+      # Rails.logger.info "Request format: #{request.format}"
+    
       respond_to do |format|
         format.turbo_stream do
-          render turbo_stream: turbo_stream.replace("disclaimer-section", partial:"disclaimers/disclaimer", locals: {disclaimer: @disclaimer})
+          render turbo_stream: turbo_stream.replace(
+            "disclaimer-section",
+            partial: "disclaimers/disclaimer",
+            locals: { disclaimer: @disclaimer }
+          )
         end
-        format.html{render :new}
+    
+        format.html { render :new }
+    
+        format.json { render json: { statement: @disclaimer.statement }, status: :created }
       end
     else
-      render :new
+      respond_to do |format|
+        format.html { render :new }
+        format.json { render json: { error: "Failed to save disclaimer" }, status: :unprocessable_entity }
+      end
     end
+    
+    
+    
+    
     
 
 

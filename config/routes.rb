@@ -40,15 +40,18 @@ Rails.application.routes.draw do
 
   #  root to: "devise/sessions#new"
 
-  resources :disclaimers
+ 
 
+ 
 
-  resources :disclaimers do 
-    member do 
+  resources :disclaimers do
+    member do
       get :download_txt
       get :download_pdf
-    end 
+    end
   end
+  
+  
 
 
  

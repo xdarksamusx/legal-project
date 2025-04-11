@@ -56,7 +56,8 @@ gem 'omniauth-rails_csrf_protection'
 gem 'omniauth-spotify'
 
 
- 
+gem 'rack-cors'
+
 
 
 group :development, :test do
