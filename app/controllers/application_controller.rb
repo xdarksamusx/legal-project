@@ -1,25 +1,11 @@
 class ApplicationController < ActionController::Base
-  before_action :authenticate_user!, except: [:csrf_token, :check]
-   protect_from_forgery with: :exception, unless: -> { request.format.json? }
-
-   
-
-
-  def after_sign_out_path_for(resource_or_scope)
-    new_user_session_path
-  end
-
-  
-
-  protected 
-
+  protect_from_forgery with: :exception, unless: -> { request.format.json? }
   def set_csrf_cookie
-    cookies['CSRF-TOKEN'] = form_authenticity_token if protect_against_forgery?
+    cookies["CSRF-TOKEN"] = form_authenticity_token
   end
 
-
-
-
-  # Only allow modern browsers supporting webp images, web push, badges, import maps, CSS nesting, and CSS :has.
-  allow_browser versions: :modern
+  def csrf_token
+    set_csrf_cookie
+    render json: { csrf_token: form_authenticity_token }
+  end
 end

@@ -58,6 +58,7 @@ gem 'omniauth-spotify'
 
 gem 'rack-cors'
 
+gem 'select2-rails'
 
 
 group :development, :test do

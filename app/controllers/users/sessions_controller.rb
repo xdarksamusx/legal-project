@@ -1,9 +1,12 @@
 class Users::SessionsController < Devise::SessionsController
-
- 
-  def create
-    Rails.logger.debug "Resetting session before login"
-    reset_session # Reset the session to avoid token mismatch
+  def new
+    if user_signed_in?
+      redirect_to disclaimer_path and return
+    end
     super
+  end
+
+  def after_sign_in_path_for(resource)
+    disclaimer_path
   end
 end

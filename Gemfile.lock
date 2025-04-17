@@ -375,6 +375,7 @@ GEM
     ruby-progressbar (1.13.0)
     rubyzip (2.4.1)
     securerandom (0.4.1)
+    select2-rails (4.0.13)
     selenium-webdriver (4.30.1)
       base64 (~> 0.2)
       logger (~> 1.4)
@@ -486,6 +487,7 @@ DEPENDENCIES
   rspec-rails
   rubocop-rails-omakase
   ruby-openai
+  select2-rails
   selenium-webdriver
   solid_cable
   solid_cache

@@ -1,7 +1,7 @@
 Rails.application.routes.draw do
   get "users/show"
   get '/profile', to: 'users#show', as: 'user_profile'
-
+  get "/disclaimer", to: "disclaimers#new"
   devise_for :users, controllers: {
     sessions: 'users/sessions',
     registrations: 'users/registrations',
@@ -9,20 +9,25 @@ Rails.application.routes.draw do
     confirmations: 'users/confirmations',
     unlocks: 'users/unlocks',
     omniauth_callbacks: 'users/omniauth_callbacks'
-  }
+  }, skip: [:sessions]
+
+  resources :disclaimers
 
   devise_scope :user do  
-    delete '/users/sign_out' => 'devise/sessions#destroy' # Changed to DELETE to match useAuth.tsx
+    get '/users/sign_in', to: 'users/sessions#new', as: :new_user_session
+    post '/users/sign_in', to: 'users/sessions#create', as: :user_session
+    delete '/users/sign_out', to: 'users/sessions#destroy', as: :destroy_user_session
+    get '/users/sign_out', to: 'users/sessions#destroy' # Temporary
+    # Move the root route here
+    root to: "users/sessions#new"
   end
 
   get "up" => "rails/health#show", as: :rails_health_check
 
-  # Add routes for session check and CSRF token
   get "/session", to: "sessions#check"
-  get "/csrf_token", to: "sessions#csrf_token"
-
-  root "disclaimers#new"
-
+  post "/session.user", to: "sessions#check" # Temporary route
+  get "/csrf_token", to: "application#csrf_token"
+ 
   resources :disclaimers do
     member do
       get :download_txt
