@@ -1,0 +1,13 @@
+<h1>Legal Disclaimer</h1>
+<p>
+  By using this application, you agree to the following terms: This application is provided "as is" without any warranties, express or implied. The creators are not liable for any damages arising from the use of this application.
+</p>
+<% if user_signed_in? %>
+  <%= form_with url: accept_legal_disclaimer_path, method: :post do |form| %>
+    <%= form.check_box :agree, required: true %>
+    <%= form.label :agree, "I agree to the disclaimer" %>
+    <%= form.submit "Accept" %>
+  <% end %>
+<% else %>
+  <p>Please <%= link_to "sign in", new_user_session_path %> to accept the disclaimer.</p>
+<% end %>

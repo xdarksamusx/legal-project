@@ -11,6 +11,11 @@ Rails.application.routes.draw do
     omniauth_callbacks: 'users/omniauth_callbacks'
   }, skip: [:sessions]
 
+  # get '/disclaimer', to: 'disclaimers#new', as: :disclaimer
+
+  get '/legal_disclaimer', to: 'disclaimers#legal', as: :legal_disclaimer
+  post '/legal_disclaimer/accept', to: 'disclaimers#accept_legal', as: :accept_legal_disclaimer
+
   resources :disclaimers
 
   devise_scope :user do  
