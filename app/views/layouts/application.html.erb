@@ -1,6 +1,8 @@
 <!DOCTYPE html>
 <html>
   <head>
+    <%= javascript_include_tag "application", "data-turbo-track": "reload", defer: true %>
+    <meta name="csrf-token" content="<%= form_authenticity_token %>">
     <%= javascript_importmap_tags %>
     <title><%= content_for(:title) || "Legal Project" %></title>
     <meta name="viewport" content="width=device-width,initial-scale=1">

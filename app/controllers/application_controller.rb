@@ -1,6 +1,10 @@
 class ApplicationController < ActionController::Base
   before_action :authenticate_user!
-  before_action :configure_permitted_parameters, if: :devise_controller?
+  
+  before_action :set_csrf_cookie
+
+  protect_from_forgery with: :null_session
+
 
   protected
 
@@ -9,11 +13,12 @@ class ApplicationController < ActionController::Base
     new_user_session_path
   end
 
-  def configure_permitted_parameters
-    devise_parameter_sanitizer.permit(:sign_up, keys: [:username])
-    devise_parameter_sanitizer.permit(:account_update, keys: [:username] )
+  
 
+  private 
 
+  def set_csrf_cookie
+    cookies['CSRF-TOKEN'] = form_authenticity_token if protect_against_forgery?
   end
 
 
