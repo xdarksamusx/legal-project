@@ -1,12 +1,8 @@
 class ApplicationController < ActionController::Base
-  before_action :authenticate_user!
-  
-  before_action :set_csrf_cookie
+  before_action :authenticate_user!, except: [:csrf_token, :check]
+   protect_from_forgery with: :exception, unless: -> { request.format.json? }
 
-  protect_from_forgery with: :null_session
-
-
-  protected
+   
 
 
   def after_sign_out_path_for(resource_or_scope)
@@ -15,7 +11,7 @@ class ApplicationController < ActionController::Base
 
   
 
-  private 
+  protected 
 
   def set_csrf_cookie
     cookies['CSRF-TOKEN'] = form_authenticity_token if protect_against_forgery?
